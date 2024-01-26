@@ -41,7 +41,7 @@ jobs:
 
       - name: Build
         if: success()
-        run: gradle build
+        run: gradle bootJar
 
       - name: Dockerize
         if: success()
@@ -49,7 +49,6 @@ jobs:
         with:
           push: true
           tags: user/app:latest
-          build-args: JAR_FILE=build/libs/*.jar
 
       - name: Functional Tests TODO
         if: success()
