@@ -8,8 +8,8 @@ on:
       - 'main'
 
 env:
-  TEST_TAG: user/app:test
-  LATEST_TAG: user/app:latest
+  TEST_TAG: moviedb/app:test
+  LATEST_TAG: moviedb/app:latest
 
 jobs:
   build:
@@ -61,7 +61,7 @@ jobs:
         timeout-minutes: 10
         run: |
           docker run --rm ${{ env.TEST_TAG }} &
-          until $(curl --output /dev/null --silent --head --fail http://localhost:8080); do printf '.'; sleep 5; done
+          until $(curl --output /dev/null --silent --head --fail http://localhost:8080/api-docs); do printf '.'; sleep 5; done
           tavern-ci tavern/*
           docker stop $(docker ps -aq)
 
