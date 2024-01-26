@@ -12,7 +12,7 @@ tests:
   container_name: tests
   image: buttahtoast/docker-tavern:latest
   volumes:
-    - '/tavern/:tavern/'
+    - 'tavern/:/tavern/'
     - '/etc/timezone:/etc/timezone:ro'
   links:
     - app
