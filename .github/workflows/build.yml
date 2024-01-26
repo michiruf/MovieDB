@@ -42,33 +42,34 @@ jobs:
         if: success()
         run: gradle bootJar
 
-      - name: Integration Tests
-        if: success()
-        run: |
-          docker-compose -f docker-compose.tests.yml up
-
-#      - name: Build Integration Tests
-#        uses: docker/build-push-action@v5
-#        with:
-#          context: .
-#          load: true
-#          tags: ${{ env.TEST_TAG }}
-#
-#      - name: Setup Integration Tests Framework (Python)
-#        uses: actions/setup-python@v5
-#        with:
-#          python-version: '3.10'
-#
-#      - name: Setup Integration Tests Framework (Tavern)
-#        run: pip install tavern
-#
-#      - name: Run Integration Tests
-#        timeout-minutes: 10
+#      - name: Integration Tests
+#        if: success()
 #        run: |
-#          docker run -p 8080:8080 --rm ${{ env.TEST_TAG }} &
-#          until $(curl --output /dev/null --silent --head --fail http://localhost:8080/api-docs); do printf '.'; sleep 5; done
-#          tavern-ci tavern/*
-#          docker stop $(docker ps -aq)
+#          docker-compose -f docker-compose.tests.yml up
+
+      - name: Build Integration Tests
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          load: true
+          tags: ${{ env.TEST_TAG }}
+
+      - name: Setup Integration Tests Framework (Python)
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Setup Integration Tests Framework (Tavern)
+        run: pip install tavern
+
+      - name: Run Integration Tests
+        timeout-minutes: 10
+        # until $(curl --output /dev/null --head --fail http://localhost:8080/api-docs); do printf '.'; sleep 5; done
+        run: |
+          docker run -p 8080:8080 --rm ${{ env.TEST_TAG }} &
+          until $(curl --output /dev/null --silent --head --fail http://localhost:8080/api-docs); do printf '.'; sleep 5; done
+          tavern-ci tavern/*
+          docker stop $(docker ps -aq)
 
       - name: Dockerized Build
         if: success()
