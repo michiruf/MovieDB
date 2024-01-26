@@ -55,16 +55,19 @@ jobs:
           load: true
           tags: ${{ env.TEST_TAG }}
 
-      - name: Setup Dockerized Tests Framework
+      - name: Setup Dockerized Tests Framework (Python)
         uses: actions/setup-python@v5
         with:
           python-version: '3.10'
+
+      - name: Setup Dockerized Tests Framework (Tavern)
         run: pip install tavern
 
       - name: Run Dockerized Tests
         run: |
           docker run --rm ${{ env.TEST_TAG }}
           tavern-ci tavern/*
+          docker stop $(docker ps -aq)
 
       - name: Dockerized Build
         if: success()
