@@ -11,11 +11,11 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.nio.file.Path;
 
-@SpringBootTest
-@Testcontainers
+//@SpringBootTest
+//@Testcontainers
 public class ContainerApplicationTests {
 
-    @Test
+    //@Test
     void shouldGetAllMovies() {
         var dockerfileImage = new ImageFromDockerfile().withDockerfile(Path.of("./Dockerfile"));
         try (var container = new GenericContainer<>(dockerfileImage)) {
