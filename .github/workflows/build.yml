@@ -59,10 +59,9 @@ jobs:
 
       - name: Run Dockerized Tests
         timeout-minutes: 10
-        # docker run --rm ${{ env.TEST_TAG }} &
         run: |
-          
-          until $(curl --output /dev/null --silent --head --fail http://myhost:myport); do printf '.'; sleep 5; done
+          docker run --rm ${{ env.TEST_TAG }} &
+          until $(curl --output /dev/null --silent --head --fail http://localhost:8080); do printf '.'; sleep 5; done
           tavern-ci tavern/*
           docker stop $(docker ps -aq)
 
