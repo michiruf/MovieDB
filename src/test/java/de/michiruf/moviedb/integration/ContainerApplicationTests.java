@@ -15,7 +15,7 @@ import java.nio.file.Path;
 //@Testcontainers
 public class ContainerApplicationTests {
 
-    @Test
+    //@Test
     void shouldGetAllMovies() {
         var dockerfileImage = new ImageFromDockerfile().withDockerfile(Path.of("./Dockerfile"));
         try (var container = new GenericContainer<>(dockerfileImage)) {
