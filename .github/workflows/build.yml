@@ -12,6 +12,11 @@ on:
     branches:
       - 'main'
 
+
+env:
+  TEST_TAG: user/app:test
+  LATEST_TAG: user/app:latest
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -43,13 +48,20 @@ jobs:
         if: success()
         run: gradle bootJar
 
-      - name: Dockerize
+      - name: Build Dockerized Tests
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          load: true
+          tags: ${{ env.TEST_TAG }}
+
+      - name: Run Dockerized Tests
+        run: |
+          docker run --rm ${{ env.TEST_TAG }}       
+
+      - name: Dockerized Build
         if: success()
         uses: docker/build-push-action@v5
         with:
           push: true
-          tags: user/app:latest
-
-      - name: Functional Tests TODO
-        if: success()
-        run: echo 'TODO'
+          tags: ${{ env.LATEST_TAG }}
