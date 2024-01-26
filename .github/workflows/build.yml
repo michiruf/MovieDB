@@ -1,0 +1,56 @@
+# docker build --build-arg JAR_FILE=build/libs/*.jar -t myorg/myapp .
+
+# docker push ghcr.io/NAMESPACE/IMAGE_NAME:latest
+
+
+name: Build
+
+on:
+  push:
+    tags:
+      - '*'
+    branches:
+      - 'main'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out project
+        if: success()
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Set up JDK 21
+        if: success()
+        uses: actions/setup-java@v3
+        with:
+          java-version: 21
+          distribution: 'microsoft'
+
+      - name: Setup Gradle
+        if: success()
+        uses: gradle/gradle-build-action@v2
+        with:
+          gradle-version: 8.5
+
+      - name: Execute tests
+        if: success()
+        run: gradle test
+
+      - name: Build
+        if: success()
+        run: gradle build
+
+      - name: Dockerize
+        if: success()
+        uses: docker/build-push-action@v5
+        with:
+          push: true
+          tags: user/app:latest
+          build-args: JAR_FILE=build/libs/*.jar
+
+      - name: Functional Tests TODO
+        if: success()
+        run: echo 'TODO'
