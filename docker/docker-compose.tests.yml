@@ -1,0 +1,20 @@
+app:
+  container_name: app
+  build: .
+  ports:
+    - '8080:8080'
+  volumes:
+    - '/etc/timezone:/etc/timezone:ro'
+  tty: true
+  restart: always
+
+tests:
+  container_name: tests
+  image: buttahtoast/docker-tavern:latest
+  volumes:
+    - '/tavern/:tavern/'
+    - '/etc/timezone:/etc/timezone:ro'
+  links:
+    - app
+  tty: true
+  restart: always
