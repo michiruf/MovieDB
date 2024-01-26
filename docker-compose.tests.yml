@@ -6,7 +6,7 @@ app:
   volumes:
     - '/etc/timezone:/etc/timezone:ro'
   tty: true
-  restart: never
+  restart: no
 
 tests:
   container_name: tests
@@ -17,4 +17,4 @@ tests:
   links:
     - app
   tty: true
-  restart: never
+  restart: no

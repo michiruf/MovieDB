@@ -34,7 +34,7 @@ jobs:
         with:
           gradle-version: 8.5
 
-      - name: Execute tests
+      - name: Tests
         if: success()
         run: gradle test
 
@@ -42,27 +42,27 @@ jobs:
         if: success()
         run: gradle bootJar
 
-      - name: Docker-Compose Tests
+      - name: Integration Tests
         if: success()
         run: |
           docker-compose -f docker-compose.tests.yml up
 
-#      - name: Build Dockerized Tests
+#      - name: Build Integration Tests
 #        uses: docker/build-push-action@v5
 #        with:
 #          context: .
 #          load: true
 #          tags: ${{ env.TEST_TAG }}
 #
-#      - name: Setup Dockerized Tests Framework (Python)
+#      - name: Setup Integration Tests Framework (Python)
 #        uses: actions/setup-python@v5
 #        with:
 #          python-version: '3.10'
 #
-#      - name: Setup Dockerized Tests Framework (Tavern)
+#      - name: Setup Integration Tests Framework (Tavern)
 #        run: pip install tavern
 #
-#      - name: Run Dockerized Tests
+#      - name: Run Integration Tests
 #        timeout-minutes: 10
 #        run: |
 #          docker run -p 8080:8080 --rm ${{ env.TEST_TAG }} &
