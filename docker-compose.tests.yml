@@ -1,12 +1,12 @@
 app:
   container_name: app
-  build: .
+  build: ..
   ports:
     - '8080:8080'
   volumes:
     - '/etc/timezone:/etc/timezone:ro'
   tty: true
-  restart: always
+  restart: never
 
 tests:
   container_name: tests
@@ -17,4 +17,4 @@ tests:
   links:
     - app
   tty: true
-  restart: always
+  restart: never
